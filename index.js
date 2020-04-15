@@ -41,6 +41,41 @@ function random(max) {
   return Math.floor(Math.random() * max);
 }
 
+/*
+Class for modifying the HTML elements on the returned website. Used by an
+HTMLRewriter instance to modify HTML on the served website.
+*/
+class elementHandler {
+  element(element) {
+    if (element.tagName === "title") {
+      element.setInnerContent("Alan Grant's Cloudflare Internship App");
+    } else if (element.tagName === "h1") {
+      element.setInnerContent(
+        "Welcome to Alan Grant's Cloudflare Internship App!"
+      );
+    } else if (
+      element.tagName === "a" &&
+      element.getAttribute("id") === "url"
+    ) {
+      element.setAttribute("href", "http://www.github.com/agrant16");
+      element.setInnerContent("Take a look at my Github profile!");
+    } else if (
+      element.tagName === "p" &&
+      element.getAttribute("id") === "description"
+    ) {
+      element.setInnerContent(
+        `Hello there! My name is Alan Grant and you're currently viewing one
+          of two variants for this website. The page is built for the Cloudflare
+          fullstack development internship application. This app stores the url
+          of this variant in a cookie and then uses that cookie to return the
+          same variant back to you for your viewing pleasure. This cookie
+          persists for five minutes, after which you can refresh the page and
+          possibly get the other variant.`
+      );
+    }
+  }
+}
+
 addEventListener("fetch", event => {
   event.respondWith(handleRequest(event.request));
 });
