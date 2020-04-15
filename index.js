@@ -76,6 +76,33 @@ class elementHandler {
   }
 }
 
+/**
+ * Parses the request's cookies looking for a cookie with "name". If
+ * "name" is found it returns the value of that cookie, else it returns
+ * null.
+ *
+ * Taken from the Cloudflare Worker recipe found at
+ * https://developers.cloudflare.com/workers/archive/recipes/setting-a-cookie/.
+ *
+ * @param {Request} request The incoming request
+ * @param {String} name The name of the cookie to retrieve.
+ */
+function getCookie(request, name) {
+  let result = null;
+  let cookieString = request.headers.get("Cookie");
+  if (cookieString) {
+    let cookies = cookieString.split(";");
+    cookies.forEach(cookie => {
+      let cookieName = cookie.split("=")[0].trim();
+      if (cookieName === name) {
+        let cookieVal = cookie.split("=")[1];
+        result = cookieVal;
+      }
+    });
+  }
+  return result;
+}
+
 addEventListener("fetch", event => {
   event.respondWith(handleRequest(event.request));
 });
@@ -83,6 +110,4 @@ addEventListener("fetch", event => {
  * Respond with hello worker text
  * @param {Request} request
  */
-async function handleRequest(request) {
-  const variantURL = "https://cfw-takehome.developers.workers.dev/api/variants";
-}
+async function handleRequest(request) {}
