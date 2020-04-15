@@ -13,6 +13,13 @@ retrieved and that same variant will be served to the client. If the max age
 has been reached they will be randomly served one of the two variants again.
 */
 
+/*
+Constants
+*/
+const VARIANTS_URL = "https://cfw-takehome.developers.workers.dev/api/variants";
+const VARIANT_COOKIE_NAME = "variant_url";
+const REWRITER = new HTMLRewriter().on("*", new elementHandler());
+
 addEventListener("fetch", event => {
   event.respondWith(handleRequest(event.request));
 });
@@ -21,7 +28,5 @@ addEventListener("fetch", event => {
  * @param {Request} request
  */
 async function handleRequest(request) {
-  return new Response("Hello worker!", {
-    headers: { "content-type": "text/plain" }
-  });
+  const variantURL = "https://cfw-takehome.developers.workers.dev/api/variants";
 }
